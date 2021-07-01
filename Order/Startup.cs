@@ -1,16 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Order.Data;
+using StackExchange.Redis;
 
 namespace Order
 {
@@ -28,9 +28,62 @@ namespace Order
         {
 
             services.AddControllers();
+
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed((host) => true)
+                .AllowCredentials());
+            });
+
+            services.AddSignalR()
+                .AddMessagePackProtocol()
+                .AddStackExchangeRedis(opt =>
+            {
+                opt.Configuration.ChannelPrefix = "AppHub";
+                opt.ConnectionFactory = async writer =>
+                {
+                    var cfg = new ConfigurationOptions
+                    {
+                        AbortOnConnectFail = false  
+                    };
+
+                    cfg.EndPoints.Add(System.Net.IPAddress.Loopback, 0);
+                    cfg.SetDefaultPorts();
+
+                    var connection = await ConnectionMultiplexer.ConnectAsync(cfg, writer);
+
+                    connection.ConnectionFailed += (_, e) =>
+                    {
+                        Console.WriteLine(e.Exception.Message);
+                    };
+
+                    return connection;
+                };
+            });
+
+            services.AddDbContext<AppDbContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddResponseCaching();
+            services.AddMemoryCache();
+
+            services.AddApiVersioning(config =>
+            {
+                config.DefaultApiVersion = new ApiVersion(1, 0);
+                config.AssumeDefaultVersionWhenUnspecified = true;
+            });
+            
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Order", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Order and Cart Service", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
             });
         }
 
@@ -47,6 +100,14 @@ namespace Order
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseResponseCaching();
+
+            app.UseStaticFiles();
+
+            app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
