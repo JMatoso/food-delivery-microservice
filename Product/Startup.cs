@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Product.Data;
+using Product.Data.Repositories;
 
 namespace Product
 {
@@ -40,6 +41,13 @@ namespace Product
             services.AddDbContext<AppDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IProductRepo, ProductRepo>();
+            services.AddScoped<IExtraRepo, ExtraRepo>();
+            services.AddScoped<ICategoryRepo, CategoryRepo>();
+
+            services.AddResponseCaching();
+            services.AddMemoryCache();
+
             services.AddApiVersioning(config =>
             {
                 config.DefaultApiVersion = new ApiVersion(1, 0);
@@ -48,7 +56,7 @@ namespace Product
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Product Service", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Product, Extra and Category Service", Version = "v1" });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -70,6 +78,8 @@ namespace Product
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseResponseCaching();
 
             app.UseCors("CorsPolicy");
 
