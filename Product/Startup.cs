@@ -81,6 +81,8 @@ namespace Product
 
             app.UseResponseCaching();
 
+            app.UseStaticFiles();
+
             app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
