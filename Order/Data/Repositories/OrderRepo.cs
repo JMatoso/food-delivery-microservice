@@ -38,5 +38,10 @@ namespace Order.Data.Repositories
             await _db.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> ChangeStatus()
+        {
+            return true;
+        }
     }
 }

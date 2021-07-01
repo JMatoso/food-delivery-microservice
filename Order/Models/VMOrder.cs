@@ -1,15 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Order.DTO;
 
-namespace Order.DTO
+namespace Order.Models
 {
-    [Table("Cart")]
-    public class Cart
+    public class VMOrder
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Required]
         public Guid? ProductId { get; set; }
 
@@ -36,7 +33,17 @@ namespace Order.DTO
         [Column(TypeName = "decimal(18, 2)")]
         public decimal TotalPrice { get; set; }
 
-        [DataType(DataType.Duration)]
-        public DateTimeOffset Created { get; set; }
+        public string Longitude { get; set; }
+
+        public string Latitude { get; set; }
+
+        [Required]
+        public string DeliveryAddress { get; set; }
+
+        [Required]
+        public PaymentType PaymentType { get; set; }
+
+        [Required]
+        public OrderStatus OrderStatus { get; set; }
     }
 }

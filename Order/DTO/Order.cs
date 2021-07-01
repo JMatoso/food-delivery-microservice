@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Order.DTO
@@ -7,9 +8,17 @@ namespace Order.DTO
     {
         public string Longitude { get; set; }
         public string Latitude { get; set; }
+
+        [Required]
         public string DeliveryAddress { get; set; }
+
+        [Required]
         public PaymentType PaymentType { get; set; }
+
+        [Required]
         public OrderStatus OrderStatus { get; set; }
+
+        public bool IsDisabled { get; set; }
     }
     
     public enum PaymentType
@@ -21,6 +30,7 @@ namespace Order.DTO
 
     public enum OrderStatus
     {
+        Pendent,
         Accepted,
         Preparing,
         Ready,
