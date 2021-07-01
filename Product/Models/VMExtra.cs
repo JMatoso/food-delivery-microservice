@@ -2,14 +2,10 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Product.DTO
+namespace Product.Models
 {
-    [Table("Extras")]
-    public class Extra
+    public class VMExtra
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Required]
         public Guid? ProductId { get; set; }
 
@@ -40,10 +36,5 @@ namespace Product.DTO
         [Required]
         [Range(1, int.MaxValue)]
         public int MaxQuantityPerOrder { get; set; } 
-
-        public bool IsDisabled { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTimeOffset Created { get; set; }
     }
 }

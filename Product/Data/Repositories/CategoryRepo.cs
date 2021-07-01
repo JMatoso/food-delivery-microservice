@@ -15,6 +15,7 @@ namespace Product.Data.Repositories
         Task<Category> Get(Guid categoryId);
         Task<Category> Get(string categoryName);
         Task<bool> Remove(Guid categoryId);
+        Task<bool> Update(Category model);
     }
 
     public class CategoryRepo : ICategoryRepo
@@ -70,6 +71,16 @@ namespace Product.Data.Repositories
             }
 
             await _db.AddAsync(model);
+            await _db.SaveChangesAsync();
+
+            _memoryCache.Remove("CategoryCache");
+
+            return true;
+        }
+
+        public async Task<bool> Update(Category model)
+        {
+            _db.Update(model);
             await _db.SaveChangesAsync();
 
             _memoryCache.Remove("CategoryCache");
