@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Order.Data;
+using Order.Data.Repositories;
+using Order.Services.Hub;
 using StackExchange.Redis;
 
 namespace Order
@@ -67,6 +69,9 @@ namespace Order
             services.AddDbContext<AppDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IOrderRepo, OrderRepo>();
+            services.AddScoped<ICartRepo, CartRepo>();
+
             services.AddApiVersioning(config =>
             {
                 config.DefaultApiVersion = new ApiVersion(1, 0);
@@ -107,6 +112,7 @@ namespace Order
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<AppHub>("/appHub");
             });
         }
     }
