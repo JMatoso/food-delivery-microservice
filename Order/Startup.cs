@@ -66,9 +66,6 @@ namespace Order
 
             services.AddDbContext<AppDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
-            services.AddResponseCaching();
-            services.AddMemoryCache();
 
             services.AddApiVersioning(config =>
             {
@@ -100,10 +97,6 @@ namespace Order
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseResponseCaching();
-
-            app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
 
