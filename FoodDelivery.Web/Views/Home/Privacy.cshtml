@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="my-3">
+    <small>
+        <a asp-action="index" asp-controller="home" class="text-dark">
+            <strong>Home</strong>
+        </a> 
+        &blacktriangleright;
+    </small>
+    <small class="text-danger">
+        <strong>
+            @ViewData["Title"]
+        </strong>
+    </small>
+</div>
+
+<p>Use this page to detail your site's privacy policy.</p>

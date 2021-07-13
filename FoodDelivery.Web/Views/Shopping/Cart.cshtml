@@ -1,0 +1,67 @@
+@{
+    ViewData["Title"] = "Shopping Basket";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="my-3">
+    <small>
+        <a asp-action="index" asp-controller="home" class="text-dark">
+            <strong>Home</strong>
+        </a> 
+        &blacktriangleright;
+    </small>
+    <small class="text-danger">
+        <strong>
+            @ViewData["Title"]
+        </strong>
+    </small>
+</div>
+
+<!--Items-->
+<table class="table table-white">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">Item</th>
+            <th scope="col" class="text-center">Quantity</th>
+            <th scope="col" class="text-center">Price</th>
+            <th scope="col" class="text-center">Extra</th>
+            <th scope="col" class="text-center">Extra Quantity</th>
+            <th scope="col" class="text-center">Total</th>
+            <th scope="col" class="text-center">#</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--Products List-->
+        <tr>
+            <th scope="row" class="w-35">
+                <div>
+                    <div class="row">
+                        <div class="col-3">
+                            <img class="product-image-cart" src="~/images/ingredients.jpg" alt="">
+                        </div>
+                        <div class="col-9">
+                            <h5 class="text-dark">No Data Product</h5>
+                            <small class="text-muted">
+                                <strong>Web ID: 1089772</strong>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <td class="text-center">2</td>
+            <td class="text-center">AKZ 1000</td>
+            <td class="text-center">Fries</td>
+            <td class="text-center">1</td>
+            <td class="text-center">AKZ 2500</td>
+            <td class="text-center">
+                <a href="" class="btn btn-sm btn-rounded p-2 btn-outline-danger" data-toggle="tooltip" data-placement="auto" title="Remove product from cart.">
+                    <span class="" data-feather="x"></span>
+                </a>
+                <a asp-action="checkout" asp-controller="shopping" asp-route-orderId="3" class="btn btn-sm btn-rounded p-2 btn-outline-success" data-toggle="tooltip" data-placement="auto" title="Procede to checkout.">
+                    <span class="" data-feather="check"></span>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,97 @@
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="my-3">
+    <small>
+        <a asp-action="index" asp-controller="home" class="text-dark">
+            <strong>Home</strong>
+        </a> 
+        &blacktriangleright;
+    </small>
+    <small class="text-danger">
+        <strong>
+            @ViewData["Title"]
+        </strong>
+    </small>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <div>
+            <h6 class="d-block text-uppercase text-center text-danger border-bottom pb-1">
+                <strong>Today's Orders</strong>
+            </h6>
+
+            <!--List-->
+            <div class="mt-3">
+                <div class="row">
+                   @for (int i = 0; i < 6; i++)
+                   {
+                        <div class="col-md-4 mb-2">
+                            <div class="border border-gray rounded">
+                                <div>
+                                    <img class="product-image" src="~/images/ingredients.jpg" alt="Plate">
+                                </div>
+                                <div class="p-3">
+                                    <h6 class="text-dark text-center my-3">
+                                        <strong>No Data Product</strong>
+                                    </h6>
+
+                                    <div class="text-center">
+                                        <h5 class="text-success">
+                                            Accepted
+                                        </h5>
+                                    </div>
+
+                                   <div class="pb-2 pr-2 text-center">
+                                        <a asp-controller="shopping" asp-action="ordering" asp-route-orderId="1" class="btn btn-sm btn-danger w-75">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                   }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <!--Filtering-->
+        <div class="text-center">
+            <h6 class="d-block text-uppercase text-danger border-bottom pb-1">
+                <strong>Filter By</strong>
+            </h6>
+
+            <!--List-->
+            <div class="mt-2 py-3">
+                <h6 class="text-uppercase">
+                    <a href="#" class="text-dark">
+                        <strong>Pendent</strong>
+                    </a>
+                </h6>
+                <h6 class="text-uppercase">
+                    <a href="#" class="text-dark">
+                        <strong>Accepted</strong>
+                    </a>
+                </h6>
+                <h6 class="text-uppercase">
+                    <a href="#" class="text-dark">
+                        <strong>Ready</strong>
+                    </a>
+                </h6>
+                <h6 class="text-uppercase">
+                    <a href="#" class="text-dark">
+                        <strong>Delivered</strong>
+                    </a>
+                </h6>
+                <h6 class="text-uppercase">
+                    <a href="#" class="text-dark">
+                        <strong>Rejected</strong>
+                    </a>
+                </h6>
+            </div>
+        </div>
+    </div>
+</div>

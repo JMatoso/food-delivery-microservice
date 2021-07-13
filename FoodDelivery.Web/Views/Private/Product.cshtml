@@ -1,0 +1,206 @@
+@model FoodDelivery.Web.Models.CommonModel
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<div>
+    @if(!string.IsNullOrEmpty(ViewBag.Warning)){
+        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+
+            <!--Alert Messages-->
+            <span>
+                @ViewBag.Warning
+            </span>
+        </div>
+    }
+
+    @if(!string.IsNullOrEmpty(ViewBag.Error)){
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+
+            <!--Alert Messages-->
+            <span>
+                @ViewBag.Error
+            </span>
+        </div>
+    }
+
+    @if(!string.IsNullOrEmpty(ViewBag.Success)){
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+
+            <!--Alert Messages-->
+            <span>
+                @ViewBag.Success
+            </span>
+        </div>
+    }
+
+    <form asp-action="Product" method="post" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <!-- Name -->
+                <label asp-for="Product.Name">
+                    <small>
+                        <strong>Name</strong>
+                    </small>
+                    <span class="text-danger">*</span>
+                </label>
+
+                <input type="text" asp-for="Product.Name" class="form-control" placeholder="Eg. Hot Dog">
+                
+                <!--Invalid Feedback-->
+                <div class="invalid">
+                    <span asp-validation-for="Product.Name"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Category -->
+                <label asp-for="Product.CategoryId">
+                    <small>
+                        <strong>Category</strong>
+                    </small>
+                    <span class="text-danger">*</span>
+                </label>
+
+                <select asp-for="Product.CategoryId" class="form-control">
+                    @if(Model.Categories != null)
+                    {
+                        if(Model.Categories.Count > 0)
+                        {
+                            foreach (var item in Model.Categories)
+                            {
+                                <option value="@item.Id">
+                                    @Html.DisplayFor(x => item.Name)
+                                </option>
+                            }
+                        }
+                    }
+                </select>
+
+                <!--Invalid Feedback-->
+                <div class="invalid">
+                    <span asp-validation-for="Product.CategoryId"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <!-- Quantity -->
+                <label asp-for="Product.Quantity">
+                    <small>
+                        <strong>Quantity</strong>
+                    </small>
+                    <span class="text-danger">*</span>
+                </label>
+
+                <input type="number" class="form-control" asp-for="Product.Quantity">
+                
+                <!--Invalid Feedback-->
+                <div class="invalid">
+                    <span asp-validation-for="Product.Quantity"></span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <!-- ReadyTime -->
+                <label asp-for="Product.ReadyTime">
+                    <small>
+                        <strong>Ready Time</strong>
+                    </small>
+                </label>
+
+                <input type="number" class="form-control" asp-for="Product.ReadyTime">
+                
+                <!--Invalid Feedback-->
+                <div class="invalid">
+                    <span asp-validation-for="Product.ReadyTime"></span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <!-- Price -->
+                <label asp-for="Product.Price">
+                    <small>
+                        <strong>Price</strong>
+                    </small>
+                    <span class="text-danger">*</span>
+                </label>
+
+                <input type="number" class="form-control" asp-for="Product.Price">
+                
+                <!--Invalid Feedback-->
+                <div class="invalid">
+                    <span asp-validation-for="Product.Price"></span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <!-- Pinned -->
+                <label asp-for="Product.Star">
+                    <small>
+                        <strong>Pinned?</strong>
+                    </small>
+                </label>
+
+                <select asp-for="Product.Star" class="form-control">
+                   <option value="false" selected>False</option>
+                   <option value="true" selected>True</option>
+                </select>
+
+                <!--Invalid Feedback-->
+                <div class="invalid">
+                    <span asp-validation-for="Product.Star"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <!-- Image -->
+            <label asp-for="Image">
+                <small>
+                    <strong>Image</strong>
+                </small>
+                <span class="text-danger">*</span>
+            </label>
+
+            <input type="file" asp-for="Image" class="form-control" required>
+            
+            <!--Invalid Feedback-->
+            <div class="invalid">
+                <span asp-validation-for="Image"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <!-- Description -->
+            <label asp-for="Product.Description">
+                <small>
+                    <strong>Description</strong>
+                </small>
+            </label>
+
+            <textarea asp-for="Product.Description" cols="" rows="" class="form-control"></textarea>
+            
+            <!--Invalid Feedback-->
+            <div class="invalid">
+                <span asp-validation-for="Product.Description"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-danger">Add</button>
+        </div>
+    </form>
+
+</div>

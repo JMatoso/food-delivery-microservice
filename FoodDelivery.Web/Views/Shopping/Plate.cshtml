@@ -1,0 +1,296 @@
+@model FoodDelivery.Web.Models.CommonModel
+
+@{
+    ViewData["Title"] = Model.ProductInfo.Product.Name;
+
+    var cat = Model.Categories.FirstOrDefault(x => x.Id == Model.ProductInfo.Product.CategoryId);
+}
+
+
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="my-3">
+    <small>
+        <a asp-action="index" asp-controller="home" class="text-dark">
+            <strong>Home</strong>
+        </a> 
+        &blacktriangleright;
+    </small>
+    <small>
+        <a asp-action="menu" asp-controller="home" class="text-dark">
+            <strong>Menu</strong>
+        </a> 
+        &blacktriangleright;
+    </small>
+    <small class="text-danger">
+        <strong>
+            @ViewData["Title"]
+        </strong>
+    </small>
+</div>
+
+<div class="row">
+    <!--Image-->
+    <div class="col-md-5">
+        <div>
+            <div>
+                <img class="product-image-cart rounded" src="~/images/@Model.ProductInfo.Product.Image" alt="@Model.ProductInfo.Product.Name image">
+            </div>
+            <div class="mt-3">
+                <h4 class="mb-3">Extras</h4>
+
+                <div class="owl-carousel owl-theme">
+                    @for (int i = 0; i < 6; i++)
+                    {
+                        <div class="item">
+                            <small>
+                                <strong>Extra Name</strong>
+                            </small>
+                            <img src="~/images/ingredients.jpg" alt="">
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Product Info-->
+    <div class="col-md-7">
+        <form asp-action="plate" asp-controller="shopping" method="post">
+            <div class="p-5 border">
+                <div class="mb-3">
+                    <h4 class="text-dark">@Model.ProductInfo.Product.Name</h4>
+                    <small class="text-muted">
+                        <strong>Web ID: @Model.GenWebId(Model.ProductInfo.Product.Id)</strong>
+                    </small>
+                    <small class="d-block text-muted">
+                        <strong>
+                            @cat.Name
+                        </strong>
+                    </small>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label for="">
+                            <small class="mb-1">
+                                <strong>Quantity</strong>
+                            </small>
+                        </label>
+                        <input type="number" asp-for="AddToCart.ProductQuantity" max="@Model.ProductInfo.Product.Quantity" class="form-control" id="product-quantity">
+                        <input type="hidden" asp-for="AddToCart.ProductId" value="@Model.ProductInfo.Product.Id" class="form-control">
+                        
+                        <!--Invalid Feedback-->
+                        <div class="invalid">
+                            <span asp-validation-for="AddToCart.ProductQuantity"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-6 text-right">
+                        <small>
+                            <strong>Price</strong>
+                        </small>
+                        <h5 class="text-dark">
+                            AKZ
+                            @Model.ProductInfo.Product.Price</h5>
+                        <input type="hidden" id="product-price" value="@Model.ProductInfo.Product.Price">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <div class="">
+                            <label for="state">
+                                <small>
+                                    <strong>Extra</strong>
+                                </small>
+                            </label>
+                            
+                            <select class="custom-select d-block w-100" asp-for="AddToCart.ExtraId" style="border-radius: 0 !important;">
+                                @foreach(var extra in Model.ProductInfo.Extras)
+                                {
+                                    <options value="@extra.Id">@Html.DisplayFor(x => extra.Name)</options>
+                                }
+                            </select>
+
+                            <!--Invalid Feedback-->
+                            <div class="invalid">
+                                <span asp-validation-for="AddToCart.ExtraId"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3 text-right">
+                        <label for="">
+                            <small class="mb-1">
+                                <strong>Quantity</strong>
+                            </small>
+                        </label>
+                        <input type="number" asp-for="AddToCart.ExtraQuantity" class="form-control">
+
+                        <!--Invalid Feedback-->
+                        <div class="invalid">
+                            <span asp-validation-for="AddToCart.ExtraQuantity"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-3 text-right">
+                        <small>
+                            <strong>Price</strong>
+                        </small>
+                        <h5 class="text-dark">AKZ 1000</h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <small>
+                            <strong>Availability</strong>
+                        </small>
+                        <h5 class="text-success">In Stock</h5>
+                    </div>
+
+                    <div class="col-6 text-right">
+                        <small>
+                            <strong>Ready Time</strong>
+                        </small>
+                        <h5 class="text-success">~ @Model.ProductInfo.Product.ReadyTime minutes</h5>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="auto" title="Add product to cart.">
+                            <span class="feather-15" data-feather="shopping-cart"></span>
+                            Add to Cart
+                        </button>
+                    </div>
+
+                    <div class="col-6 text-right">
+                        <small>
+                            <strong>Total</strong>
+                        </small>
+                        <h5 class="text-danger">
+                            AKZ 
+                            <span id="product-total">
+                                @Model.ProductInfo.Product.Price
+                            </span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Tablist-->
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#description" role="tab">Description</a>
+        </li>
+        @if(Model.Products != null)
+        {
+            if(Model.Products.Count > 0)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#category" role="tab">
+                        More of 
+                        <strong>
+                            @cat.Name
+                        </strong>
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+
+    <div class="tab-content p-3 border" style="border-top: none !important;" role="tablist">
+        <div class="tab-pane fade show active" id="description" role="tabpanel">
+            <p>
+                @Model.ProductInfo.Product.Description
+            </p>
+        </div>
+        <div class="tab-pane fade" id="category" role="tabpanel">
+            <!--List-->
+            <div class="mt-3">
+                <div class="row">
+                    @if(Model.Products != null)
+                    {
+                        foreach (var item in Model.Products.Where(x => x.Id != Model.ProductInfo.Product.Id).Take(4))
+                        {
+                            <div class="col-md-3 mb-2">
+                                <div class="border border-gray rounded box-shadow">
+                                    <div>
+                                        <img class="product-image" src="~/images/@Html.DisplayFor(x => item.Image)" alt="@Html.DisplayFor(x => item.Name) image">
+                                    </div>
+                                    <div class="p-3">
+                                        <h6 class="text-dark text-center my-3">
+                                            <strong>@Html.DisplayFor(x => item.Name)</strong>
+                                        </h6>
+
+                                        <div class="text-center">
+                                            <h5>
+                                                @Html.DisplayFor(x => item.Price)
+                                            </h5>
+                                        </div>
+
+                                    <div class="pb-2 pr-2 text-center">
+                                            <a asp-action="plate" asp-controller="shopping" asp-route-productId="@item.Id" class="btn btn-sm btn-danger w-75" data-toggle="tooltip" data-placement="auto" title="See @Html.DisplayFor(x => item.Name) details.">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Recommendations-->
+<div class="mt-5">
+    <h6 class="d-block text-uppercase text-center text-danger border-bottom pb-1">
+        <strong>Recommended Products</strong>
+    </h6>
+
+    <!--List-->
+    <div class="mt-3">
+        <div class="row">
+            @if(Model.Products != null)
+            {
+                foreach (var item in Model.Products.Where(x => x.Id != Model.ProductInfo.Product.Id).Take(4))
+                {
+                    <div class="col-md-3 mb-2">
+                        <div class="border border-gray rounded box-shadow">
+                            <div>
+                                <img class="product-image" src="~/images/@Html.DisplayFor(x => item.Image)" alt="@Html.DisplayFor(x => item.Name) image">
+                            </div>
+                            <div class="p-3">
+                                <h6 class="text-dark text-center my-3">
+                                    <strong>@Html.DisplayFor(x => item.Name)</strong>
+                                </h6>
+
+                                <div class="text-center">
+                                    <h5>
+                                        @Html.DisplayFor(x => item.Price)
+                                    </h5>
+                                </div>
+
+                            <div class="pb-2 pr-2 text-center">
+                                    <a asp-action="plate" asp-controller="shopping" asp-route-productId="@item.Id" class="btn btn-sm btn-danger w-75" data-toggle="tooltip" data-placement="auto" title="See @Html.DisplayFor(x => item.Name) details.">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h4 class="text-muted text-center mt-3 w-100">Any product found.</h4> 
+            }
+        </div>
+    </div>
+</div>

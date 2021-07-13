@@ -1,0 +1,86 @@
+@model FoodDelivery.Web.Models.VMModels.VMCategory
+
+@{
+    ViewData["Title"] = "Add Category";
+}
+
+<div>
+    @if(!string.IsNullOrEmpty(ViewBag.Warning)){
+        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+
+            <!--Alert Messages-->
+            <span>
+                @ViewBag.Warning
+            </span>
+        </div>
+    }
+
+    @if(!string.IsNullOrEmpty(ViewBag.Error)){
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+
+            <!--Alert Messages-->
+            <span>
+                @ViewBag.Error
+            </span>
+        </div>
+    }
+
+    @if(!string.IsNullOrEmpty(ViewBag.Success)){
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+
+            <!--Alert Messages-->
+            <span>
+                @ViewBag.Success
+            </span>
+        </div>
+    }
+
+    <form asp-action="Category" method="post">
+        <div class="mb-3">
+            <!-- Name -->
+            <label asp-for="Name">
+                <small>
+                    <strong>Name</strong>
+                </small>
+                <span class="text-danger">*</span>
+            </label>
+
+            <input type="text" asp-for="Name" class="form-control">
+            
+            <!--Invalid Feedback-->
+            <div class="invalid">
+                <span asp-validation-for="Name" placeholder="Eg. Fast Food"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <!-- Description -->
+            <label asp-for="Description">
+                <small>
+                    <strong>Description</strong>
+                </small>
+                <span class="text-danger">*</span>
+            </label>
+
+            <textarea asp-for="Description" cols="" rows="" class="form-control"></textarea>
+            
+            <!--Invalid Feedback-->
+            <div class="invalid">
+                <span asp-validation-for="Description"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-danger">Add</button>
+        </div>
+    </form>
+</div>

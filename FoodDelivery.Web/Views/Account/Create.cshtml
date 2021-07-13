@@ -1,0 +1,147 @@
+@model FoodDelivery.Web.Models.User
+
+@{
+    Layout = "_Auth";
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="form-signin container" style="margin-top: 5%;">
+
+    <h4>Sign up</h4>
+    <span>
+        Ad leggings keytar, brunch id art party dolor labore. 
+        Pitchfork yr enim lo-fi before they sold out qui. 
+    </span>
+
+    <form class="needs-validation mt-3" asp-action="create" method="post">
+        @if(!string.IsNullOrEmpty(ViewBag.Warning)){
+            <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+
+                <!--Alert Messages-->
+                <span>
+                    @ViewBag.Warning
+                </span>
+            </div>
+        }
+
+        @if(!string.IsNullOrEmpty(ViewBag.Error)){
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+
+                <!--Alert Messages-->
+                <span>
+                    @ViewBag.Error
+                </span>
+            </div>
+        }
+        
+        <!--Name-->
+        <div class="form-group">
+            <div class="row">
+                <!--FirstName-->
+                <div class="col-6">
+                    <label class="text-nowrap" asp-for="FirstName">
+                        <small>
+                            <strong>First Name</strong>
+                        </small>
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <input class="form-control" asp-for="FirstName" type="text">
+                    
+                    <!--Invalid Feedback-->
+                    <div class="invalid">
+                        <span asp-validation-for="FirstName"></span>
+                    </div>
+                </div>
+
+                <!--LastName-->
+                <div class="col-6">
+                    <label class="text-nowrap" asp-for="LastName">
+                        <small>
+                            <strong>Last Name</strong>
+                        </small>
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <input class="form-control" asp-for="LastName" type="text">
+                    
+                    <!--Invalid Feedback-->
+                    <div class="invalid">
+                        <span asp-validation-for="LastName"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label asp-for="Email">
+                <small>
+                    <strong>Email</strong>
+                </small>
+                <span class="text-danger">*</span>
+            </label>
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">&commat;</span>
+                </div>
+                <input type="email" asp-for="Email" class="form-control">
+            </div>
+            
+            <!--Invalid Feedback-->
+            <div class="invalid">
+                <span asp-validation-for="Email"></span>
+            </div>
+        </div>
+
+        <!--PhoneNumber-->
+        <div class="form-group">
+            <label class="text-nowrap" asp-for="PhoneNumber">
+                <small>
+                    <strong>Phone Number</strong>
+                </small>
+            </label>
+
+            <input class="form-control" asp-for="PhoneNumber" type="number" placeholder="+244 XXX XXX XXX">
+            
+            <!--Invalid Feedback-->
+            <div class="invalid">
+                <span asp-validation-for="PhoneNumber"></span>
+            </div>
+        </div>
+
+        <!--Password-->
+        <div class="form-group">
+            <label class="text-nowrap" asp-for="Password">
+                <small>
+                    <strong>Password</strong>
+                </small>
+                <span class="text-danger">*</span>
+            </label>
+
+            <input class="form-control" asp-for="Password" type="password" placeholder="xxxxxxx">
+            
+            <!--Invalid Feedback-->
+            <div class="invalid">
+                <span asp-validation-for="Password"></span>
+            </div>
+        </div>
+
+        <!--Submit-->
+        <div class="mt-2">
+            <button class="btn btn-sm btn-danger" type="submit">Sign up</button>
+            <hr>
+            <small>
+                Already have an account? 
+                <a asp-action="login" asp-controller="auth" class="text-danger">Sign in.</a>
+            </small>
+        </div>
+    </form>
+</div>

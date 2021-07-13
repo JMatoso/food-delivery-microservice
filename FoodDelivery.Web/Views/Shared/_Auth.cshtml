@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#343a40"/>
+    <meta name="msapplication-navbutton-color" content="#343a40"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="#343a40"/>
+
+    <title>@ViewData["Title"] - Food Delivery</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/AdminLTE.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <!--Loader-->
+    <div id='loader'>
+        <!--Spinner -->
+        <div class="spinner"></div>
+    </div>
+
+    <div class="">
+        <main role="main" class="px-3">
+            <div class="row">
+                <div class="col-md-5 bg-dark" style="min-height: 100vh;">
+                    <div class="">
+                        <div class="text-right text-white mr-5" style="margin-top: 50%;">
+                            <h4>Welcome to</h4>  
+                            <h2>
+                                <a asp-action="index" asp-controller="home">
+                                    <span class="text-white">Food</span><span class="text-danger">Delivery</span>
+                                </a>
+                            </h2>
+                        </div>
+                    </div>  
+                </div>
+                <div class="col-md-7">
+                    @RenderBody()
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!--footer class="border-top footer text-muted fixed-bottom mt-5">
+        <div class="container">
+            &copy; 2021 - Food Delivery - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer-->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        //Start loader
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader')
+            setTimeout(() => {
+                loader.classList.add('fadeOut')
+            }, 300)
+        })
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

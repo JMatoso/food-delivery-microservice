@@ -1,0 +1,93 @@
+@model FoodDelivery.Web.Models.Login
+
+@{
+    Layout = "_Auth";
+    ViewData["Title"] = "Login";
+}
+
+<div class="form-signin container" style="margin-top: 15%;">
+
+    <h4>Sign in</h4>
+    <span>
+        Ad leggings keytar, brunch id art party dolor labore. 
+        Pitchfork yr enim lo-fi before they sold out qui. 
+    </span>
+
+    @if(!string.IsNullOrEmpty(ViewBag.Warning)){
+        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+
+            <!--Alert Messages-->
+            <span>
+                @ViewBag.Warning
+            </span>
+        </div>
+    }
+
+    @if(!string.IsNullOrEmpty(ViewBag.Error)){
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+
+            <!--Alert Messages-->
+            <span>
+                @ViewBag.Error
+            </span>
+        </div>
+    }
+
+    <form class="needs-validation mt-3" asp-action="login" method="post">
+        <div class="mb-3">
+            <!-- Email -->
+            <label asp-for="Email">
+                <small>
+                    <strong>Email</strong>
+                </small>
+                <span class="text-danger">*</span>
+            </label>
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">&commat;</span>
+                </div>
+                <input type="email" asp-for="Email" class="form-control">
+            </div>
+            
+            <!--Invalid Feedback-->
+            <div class="invalid">
+                <span asp-validation-for="Email"></span>
+            </div>
+        </div>
+
+        <!--Password-->
+        <div class="form-group">
+            <label class="text-nowrap" asp-for="Password">
+                <small>
+                    <strong>Password</strong>
+                </small>
+                <span class="text-danger">*</span>
+            </label>
+
+            <input class="form-control" asp-for="Password" type="password" placeholder="xxxxxxx">
+            
+            <!--Invalid Feedback-->
+            <div class="invalid">
+                <span asp-validation-for="Password"></span>
+            </div>
+        </div>
+
+        <a href="#" class="text-danger">Forgot Password?</a>
+
+        <div class="mt-2">
+            <button class="btn btn-sm btn-danger" type="submit">Sign in</button>
+            <hr>
+            <small>
+                Don't have an account yet? 
+                <a asp-action="create" asp-controller="account" asp-route-returnUrl="@Model.ReturnUrl" class="text-danger">Create Account.</a>
+            </small>
+        </div>
+    </form>
+</div>

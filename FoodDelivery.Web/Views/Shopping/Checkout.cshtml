@@ -1,0 +1,195 @@
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="my-3">
+    <small>
+        <a asp-action="index" asp-controller="home" class="text-dark">
+            <strong>Home</strong>
+        </a> 
+        &blacktriangleright;
+    </small>
+    <small>
+        <a asp-action="orders" asp-controller="shopping" class="text-dark">
+            <strong>Orders</strong>
+        </a> 
+        &blacktriangleright;
+    </small>
+    <small class="text-danger">
+        <strong>
+            @ViewData["Title"]
+        </strong>
+    </small>
+</div>
+
+<form action="" method="post">
+    <!--Order Detail-->
+    <div class="row">
+        <!--Product-->
+        <div class="col-md-4">
+            <h4 class="mb-3">Product</h4>
+            <div>
+                <img src="~/images/ingredients.jpg" alt="">
+            </div>
+            <div class="mt-2">
+                <h5 class="text-dark">No Data Product</h5>
+                <small class="text-muted">
+                    <strong>Web ID: 1089772</strong>
+                </small>
+            </div>
+        </div>
+
+        <!--Cart Info-->
+        <div class="col-md-4">
+            <div>
+                <h4 class="mb-3">Ship Info</h4>
+                <div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small>
+                                <strong>Quantity</strong>
+                            </small>
+                            <h5 class="text-dark">2</h5>
+                        </div>
+
+                        <div class="col-6 text-right">
+                            <small>
+                                <strong>Price</strong>
+                            </small>
+                            <h5 class="text-dark">AKZ 1000</h5>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small>
+                                <strong>Extra - Quantity</strong>
+                            </small>
+                            <h5 class="text-dark">Fries - 2</h5>
+                        </div>
+
+                        <div class="col-6 text-right">
+                            <small>
+                                <strong>Extra Price</strong>
+                            </small>
+                            <h5 class="text-dark">AKZ 750</h5>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small>
+                                <strong>Shipping Cost</strong>
+                            </small>
+                            <h5 class="text-dark">AKZ 1000</h5>
+                        </div>
+
+                        <div class="col-6 text-right">
+                            <small>
+                                <strong>Total</strong>
+                            </small>
+                            <h5 class="text-dark">AKZ 3500</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Ship Detail-->
+        <div class="col-md-4">
+            <div>
+                <!--Payment-->
+                <h4 class="mb-3">Payment</h4>
+                <div class="d-block my-3">
+                    <div class="custom-control custom-radio">
+                        <input id="tpa" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                        <label class="custom-control-label" for="tpa">TPA</label>
+                    </div>
+
+                    <div class="custom-control custom-radio">
+                        <input id="wallet" name="paymentMethod" type="radio" class="custom-control-input" required>
+                        <label class="custom-control-label" for="wallet">Wallet</label>
+                    </div>
+
+                    <div class="custom-control custom-radio">
+                        <input id="reference" name="paymentMethod" type="radio" class="custom-control-input" required>
+                        <label class="custom-control-label" for="reference">Reference</label>
+                    </div>
+                </div>
+                
+                <!--Payment Source-->
+                <div class="mt-2" id="wallet-div">
+                    <div class="mb-3">
+                        <label class="d-block" for="">Wallet Account</label>
+                        <input type="text" class="form-control w-100">
+
+                        <div class="invalid-feedback">
+                            
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="d-block" for="">Account Password</label>
+                        <input type="text" class="form-control w-100">
+
+                        <div class="invalid-feedback">
+                            
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="mt-2" id="ref-div">
+                    <div class="mb-3">
+                        <label class="d-block" for="">Reference Code</label>
+                        <input type="text" class="form-control w-100">
+
+                        <div class="invalid-feedback">
+                            
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="mb-3" id="bill-address">
+                    <!--Billing Address-->
+                    <h4 class="mb-3">Billing Address</h4>
+                    <label class="d-block" for="zip">Address</label>
+                    
+                    <!--Input-->
+                    <div class="btn-group w-100">
+                        <input type="text" class="form-control w-100">
+                        <button class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="auto" title="Use my actual localization.">
+                            <span class="feather-15" data-feather="map-pin"></span>
+                        </button>
+                    </div>
+
+                    <div class="invalid-feedback">
+                        
+                    </div>
+                </div>
+
+                <!--Same Address-->
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="same-address">
+                    <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address.</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Controls-->
+    <div class="my-5">
+        <div class="row">
+            <div class="col-6">
+                <a asp-action="cart" asp-controller="shopping" class="btn btn-default">Back</a>
+            </div>
+            <div class="col-6 text-right">
+                <button type="submit" class="btn btn-danger">Continue</button>
+            </div>
+        </div>
+    </div>
+</form>

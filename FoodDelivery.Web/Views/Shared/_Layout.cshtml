@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#343a40"/>
+    <meta name="msapplication-navbutton-color" content="#343a40"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="#343a40"/>
+
+    <title>@ViewData["Title"] - Food Delivery</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/carousel.css" />
+    <link rel="stylesheet" href="~/css/AdminLTE.min.css" />
+    <link rel="stylesheet" href="~/css/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/owlcarousel/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <!--Loader-->
+    <div id='loader'>
+        <!--Spinner -->
+        <div class="spinner"></div>
+    </div>
+
+    <header>
+        <div class="container p-3">
+            <div class="row">
+                <div class="col-3">
+                    <small class="d-block text-muted">Email Address</small>
+                    <a class="text-dark" href="mailto:geral@fooddelivery.com">
+                        <strong>geral@fooddelivery.com</strong>
+                    </a>
+                </div>
+                <div class="col-6 text-center">
+                    <a href="https://facebook.com/FoodDelivery" target="_blank" class="btn btn-sm btn-rounded p-1 px-2 btn-outline-danger">
+                        <span class="feather-15" data-feather="facebook"></span>
+                    </a>
+                    <a href="https://linkedin.com/FoodDelivery" target="_blank" class="btn btn-sm btn-rounded p-1 px-2 btn-outline-danger">
+                        <span class="feather-15" data-feather="linkedin"></span>
+                    </a>
+                    <a href="https://twitter.com/_FoodDelivery1" target="_blank" class="btn btn-sm btn-rounded p-1 px-2 btn-outline-danger">
+                        <span class="feather-15" data-feather="twitter"></span>
+                    </a>
+                </div>
+                <div class="col-3 text-right">
+                    <small class="d-block text-muted">Phone Number</small>
+                    <a class="text-dark" href="tel:+244123456789">
+                        <strong>+244 123-456-789</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="home" asp-action="Index">
+                    <span class="text-white">Food</span><span class="text-danger">Delivery</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="home" asp-action="index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="home" asp-action="menu">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="home" asp-action="about">About</a>
+                        </li>
+                    </ul>
+                    <partial name="_PartialLogin" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer bg-dark navbar-dark text-muted">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    &copy; 2021 - 
+                    <span class="text-white">Food Delivery</span> 
+                    All rights reserved.
+                </div>
+                <div class="col-md-6 text-right">
+                    <a class="text-white" asp-controller="Home" asp-action="Privacy">Privacy</a> -
+                    <a class="text-white" asp-controller="Home" asp-action="Contact">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/util.js"></script>
+    <script src="~/js/tooltip.js"></script>
+    <script src="~/js/feather.min.js"></script>
+    <script src="~/js/owlcarousel/owl.carousel.min.js"></script>
+     <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        //Start loader
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader')
+            setTimeout(() => {
+                loader.classList.add('fadeOut')
+            }, 300)
+        })
+
+        //Set feather icons
+        feather.replace()
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
