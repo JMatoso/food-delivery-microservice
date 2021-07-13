@@ -20,12 +20,28 @@ namespace Order.Models
         [Required]
         [Range(1, int.MaxValue)]
         public int ProductQuantity { get; set; }
+        
+        [Required]
+        [DataType(DataType.ImageUrl)]
+        public string Image { get; set; }
+
+        [Required]
+        [Range(1, double.MaxValue)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal ProductPrice { get; set; }
 
         public Guid? ExtraId { get; set; }
 
         [Required]
         [Range(0, int.MaxValue)]
         public int? ExtraQuantity { get; set; }
+
+        [Required]
+        [Range(0, double.MaxValue)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal ExtraPrice { get; set; }
 
         [Required]
         [Range(1, double.MaxValue)]
@@ -42,6 +58,12 @@ namespace Order.Models
 
         [Required]
         public PaymentType PaymentType { get; set; }
+    }
+
+    public class VMOrderStatus
+    {
+        [Required]
+        public Guid OrderId { get; set; }
 
         [Required]
         public OrderStatus OrderStatus { get; set; }

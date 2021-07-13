@@ -75,7 +75,7 @@ namespace Product.Controllers
         /// <response code="400">Fill all required fields.</response>
         /// <response code="401">Not Authorized.</response>
         [HttpPost("category")]
-        public async Task<ActionResult> Add(VMCategory model)
+        public async Task<ActionResult> Add([FromBody]VMCategory model)
         {
             if(ModelState.IsValid)
             {
@@ -118,7 +118,7 @@ namespace Product.Controllers
         /// <response code="400">Fill all required fields.</response>
         /// <response code="401">Not Authorized.</response>
         [HttpPut("category")]
-        public async Task<ActionResult> Update(Category model)
+        public async Task<ActionResult> Update([FromBody]Category model)
         {
             if(ModelState.IsValid)
             {

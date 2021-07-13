@@ -5,6 +5,7 @@ using FoodDelivery.Web.Models;
 using FoodDelivery.Web.Services.Client;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using FoodDelivery.Web.Helpers;
 
 namespace FoodDelivery.Web.Controllers
 {
@@ -24,8 +25,8 @@ namespace FoodDelivery.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var categories = await _client.GetAsync<List<Category>>(Routes.CategoryBaseUrl, "application/json", "");
-            var products = await _client.GetAsync<List<Models.Product>>(Routes.ProductBaseUrl, "application/json", "");
+            var categories = await _client.GetAsync<List<Category>>(Routes.CategoryBaseUrl);
+            var products = await _client.GetAsync<List<Models.Product>>(Routes.ProductBaseUrl);
             
             return View(
                 _common = new()
@@ -38,8 +39,8 @@ namespace FoodDelivery.Web.Controllers
 
         public async Task<IActionResult> Menu()
         {
-            var categories = await _client.GetAsync<List<Category>>(Routes.CategoryBaseUrl, "application/json", "");
-            var products = await _client.GetAsync<List<Models.Product>>(Routes.ProductBaseUrl, "application/json", "");
+            var categories = await _client.GetAsync<List<Category>>(Routes.CategoryBaseUrl);
+            var products = await _client.GetAsync<List<Models.Product>>(Routes.ProductBaseUrl);
             
             return View(
                 _common = new()

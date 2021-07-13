@@ -87,7 +87,7 @@ namespace Product.Controllers
         /// <response code="400">Fill all required fields.</response>
         /// <response code="401">Not Authorized.</response>
         [HttpPost("extra")]
-        public async Task<ActionResult> Add(VMExtra model, IFormFile image)
+        public async Task<ActionResult> Add([FromBody]VMExtra model, IFormFile image)
         {
             if(ModelState.IsValid)
             {
@@ -137,7 +137,7 @@ namespace Product.Controllers
         /// <response code="401">Not Authorized.</response>
         /// <response code="404">Not Found.</response>
         [HttpPut("extra")]
-        public async Task<ActionResult> Update(Extra model)
+        public async Task<ActionResult> Update([FromBody]Extra model)
         {
             if(ModelState.IsValid)
             {

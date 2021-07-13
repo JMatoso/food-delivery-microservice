@@ -1,4 +1,4 @@
-namespace FoodDelivery.Web.Services.Client
+namespace FoodDelivery.Web.Helpers
 {
     public static class Routes
     {

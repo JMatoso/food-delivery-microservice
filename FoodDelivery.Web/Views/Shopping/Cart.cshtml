@@ -1,3 +1,5 @@
+@model List<FoodDelivery.Web.Models.Cart>
+
 @{
     ViewData["Title"] = "Shopping Basket";
 }
@@ -33,35 +35,53 @@
     </thead>
     <tbody>
         <!--Products List-->
-        <tr>
-            <th scope="row" class="w-35">
-                <div>
-                    <div class="row">
-                        <div class="col-3">
-                            <img class="product-image-cart" src="~/images/ingredients.jpg" alt="">
-                        </div>
-                        <div class="col-9">
-                            <h5 class="text-dark">No Data Product</h5>
-                            <small class="text-muted">
-                                <strong>Web ID: 1089772</strong>
-                            </small>
-                        </div>
-                    </div>
-                </div>
-            </th>
-            <td class="text-center">2</td>
-            <td class="text-center">AKZ 1000</td>
-            <td class="text-center">Fries</td>
-            <td class="text-center">1</td>
-            <td class="text-center">AKZ 2500</td>
-            <td class="text-center">
-                <a href="" class="btn btn-sm btn-rounded p-2 btn-outline-danger" data-toggle="tooltip" data-placement="auto" title="Remove product from cart.">
-                    <span class="" data-feather="x"></span>
-                </a>
-                <a asp-action="checkout" asp-controller="shopping" asp-route-orderId="3" class="btn btn-sm btn-rounded p-2 btn-outline-success" data-toggle="tooltip" data-placement="auto" title="Procede to checkout.">
-                    <span class="" data-feather="check"></span>
-                </a>
-            </td>
-        </tr>
+        @if(Model != null)
+        {
+            if(Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row" class="w-35">
+                            <div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <img class="product-image-cart" src="~/images/@Html.DisplayFor(x => item.Image)" alt="@Html.DisplayFor(x => item.ProductName) image">
+                                    </div>
+                                    <div class="col-9">
+                                        <h5 class="text-dark">@Html.DisplayFor(x => item.ProductName)</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <td class="text-center">
+                            @Html.DisplayFor(x => item.ProductQuantity)
+                        </td>
+                        <td class="text-center">
+                            AKZ 
+                            @Html.DisplayFor(x => item.ProductPrice)
+                        </td>
+                        <td class="text-center">
+                            *****
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(x => item.ExtraQuantity)
+                        </td>
+                        <td class="text-center">
+                            AKZ 
+                            @Html.DisplayFor(x => item.TotalPrice)
+                        </td>
+                        <td class="text-center">
+                            <a asp-action="removefromcart" asp-controller="shopping" asp-route-cartId="@item.Id" class="btn btn-sm btn-rounded p-2 btn-outline-danger" data-toggle="tooltip" data-placement="auto" title="Remove product from cart.">
+                                <span class="" data-feather="x"></span>
+                            </a>
+                            <a asp-action="checkout" asp-controller="shopping" asp-route-cartId="@item.Id" class="btn btn-sm btn-rounded p-2 btn-outline-success" data-toggle="tooltip" data-placement="auto" title="Procede to checkout.">
+                                <span class="" data-feather="check"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        }
     </tbody>
 </table>

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using FoodDelivery.Web.Models;
 using FoodDelivery.Web.Models.VMModels;
 using Microsoft.AspNetCore.Mvc;
-using FoodDelivery.Web.Services;
+using FoodDelivery.Web.Helpers;
 using FoodDelivery.Web.Services.Client;
 
 namespace FoodDelivery.Web.Controllers
@@ -30,7 +30,7 @@ namespace FoodDelivery.Web.Controllers
             {
                 var status = await _client.PostAsync<VMCategory>(model, Routes.CategoryBaseUrl, "application/json", "");
 
-                status.Returned = status.Returned == null ? "400" : status.Returned.ToString();
+                status.Returned = status.Returned == null ? $"Something went wrong. Error Code: #{status.Code}" : status.Returned.ToString();
 
                 switch(status.Code)
                 {

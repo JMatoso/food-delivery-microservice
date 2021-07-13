@@ -24,6 +24,12 @@ namespace Order.DTO
         [Range(1, int.MaxValue)]
         public int ProductQuantity { get; set; }
 
+        [Required]
+        [Range(1, double.MaxValue)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal ProductPrice { get; set; }
+
         public Guid? ExtraId { get; set; }
 
         [Required]
@@ -31,10 +37,20 @@ namespace Order.DTO
         public int? ExtraQuantity { get; set; }
 
         [Required]
+        [Range(0, double.MaxValue)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal ExtraPrice { get; set; }
+
+        [Required]
         [Range(1, double.MaxValue)]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal TotalPrice { get; set; }
+
+        [Required]
+        [DataType(DataType.ImageUrl)]
+        public string Image { get; set; }
 
         [DataType(DataType.Duration)]
         public DateTimeOffset Created { get; set; }

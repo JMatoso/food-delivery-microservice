@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Order.Data.Repositories;
 using Order.Models;
+using Order.Services.Hub;
 
 namespace Order.Controllers
 {
@@ -16,12 +18,15 @@ namespace Order.Controllers
     {
         private readonly IOrderRepo _app;
         private readonly ICartRepo _cart;
+        private IHubContext<AppHub> _hub { get; set; }
         public OrderController(
             IOrderRepo app,
-            ICartRepo cart)
+            ICartRepo cart,
+            IHubContext<AppHub> hub)
         {
             _app = app;
             _cart = cart;
+            _hub = hub;
         }
 
         /// <summary>
@@ -101,23 +106,60 @@ namespace Order.Controllers
                     ClientId = model.ClientId,
                     ProductName = model.ProductName,
                     ProductQuantity = model.ProductQuantity,
+                    ProductPrice = model.ProductPrice,
                     ExtraId = model.ExtraId,
                     ExtraQuantity = model.ExtraQuantity,
+                    ExtraPrice = model.ExtraPrice,
+                    Image = model.Image,
                     TotalPrice = model.TotalPrice,
                     Longitude = model.Longitude,
                     Latitude = model.Latitude,
                     DeliveryAddress = model.DeliveryAddress,
                     PaymentType = model.PaymentType,
-                    OrderStatus = model.OrderStatus,
+                    OrderStatus = DTO.OrderStatus.Pendent,
                     Created = DateTimeOffset.Now
                 };
 
                 if(await _app.Add(order) == true)
                 {
-
+                    //Remove cart
                     return Ok("Your order has been shipped you can track its status now.");
                 }
                 
+                return BadRequest("Something went wrong, try again.");
+            }
+
+            return BadRequest("Fill all required fields.");
+        }
+
+        /// <summary>
+        /// Change order status.
+        /// </summary>
+        /// <response code="200">Ok.</response>
+        /// <response code="400">Fill all required fields.</response>
+        /// <response code="401">Not Authorized.</response>
+        /// <response code="404">Not Found.</response>
+        [HttpPut("order")]
+        public async Task<ActionResult> ChangeOrderStatus([FromBody]VMOrderStatus model)
+        {
+            if(ModelState.IsValid)
+            {
+                var order = await _app.Get(model.OrderId);
+
+                if(order == null)
+                {
+                    return NotFound("Order not found.");
+                }
+
+                order.OrderStatus = model.OrderStatus;
+
+                if(await _app.ChangeStatus(order))
+                {
+                    var orderId =  model.OrderId.ToString().Substring(0, 8);
+                    await _hub.Clients.Group(order.ClientId.ToString()).SendAsync("UpdateOrders", $"Order status has been changed to {model.OrderStatus}.", $"#{orderId}");
+                    return Ok($"Order status has been changed to {model.OrderStatus}.");
+                }
+
                 return BadRequest("Something went wrong, try again.");
             }
 

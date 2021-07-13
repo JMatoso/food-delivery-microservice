@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
-namespace FoodDelivery.Web.Services
+namespace FoodDelivery.Web.Helpers
 {
     public class UploadFile
     {

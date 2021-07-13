@@ -30,6 +30,45 @@
     </small>
 </div>
 
+@if(!string.IsNullOrEmpty(ViewBag.Success)){
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+
+        <!--Alert Messages-->
+        <span>
+            @ViewBag.Success
+        </span>
+    </div>
+}
+
+@if(!string.IsNullOrEmpty(ViewBag.Warning)){
+    <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+
+        <!--Alert Messages-->
+        <span>
+            @ViewBag.Warning
+        </span>
+    </div>
+}
+
+@if(!string.IsNullOrEmpty(ViewBag.Error)){
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+
+        <!--Alert Messages-->
+        <span>
+            @ViewBag.Error
+        </span>
+    </div>
+}
+
 <div class="row">
     <!--Image-->
     <div class="col-md-5">
@@ -57,7 +96,7 @@
 
     <!--Product Info-->
     <div class="col-md-7">
-        <form asp-action="plate" asp-controller="shopping" method="post">
+        <form asp-action="plate" asp-route-productId="@Model.ProductInfo.Product.Id" asp-controller="shopping" method="post">
             <div class="p-5 border">
                 <div class="mb-3">
                     <h4 class="text-dark">@Model.ProductInfo.Product.Name</h4>
@@ -108,6 +147,7 @@
                             </label>
                             
                             <select class="custom-select d-block w-100" asp-for="AddToCart.ExtraId" style="border-radius: 0 !important;">
+                                <options value="@Guid.Empty">Select an extra...</options>
                                 @foreach(var extra in Model.ProductInfo.Extras)
                                 {
                                     <options value="@extra.Id">@Html.DisplayFor(x => extra.Name)</options>
@@ -190,6 +230,7 @@
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#description" role="tab">Description</a>
         </li>
+
         @if(Model.Products != null)
         {
             if(Model.Products.Count > 0)
@@ -294,3 +335,9 @@
         </div>
     </div>
 </div>
+
+@{
+    <script>
+        GetExtraData(@Model.ProductInfo.Extras);
+    </script>
+}

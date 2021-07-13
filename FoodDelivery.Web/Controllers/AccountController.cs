@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using FoodDelivery.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using FoodDelivery.Web.Services.Client;
+using FoodDelivery.Web.Helpers;
 
 namespace Controllers
 {
@@ -24,9 +25,9 @@ namespace Controllers
             if(ModelState.IsValid)
             {
             	model.Role = "Client";
-                var status = await _client.PostAsync<User>(model, Routes.AccountBaseUrl, "application/json", "");
+                var status = await _client.PostAsync<User>(model, Routes.AccountBaseUrl);
 
-                status.Returned = status.Returned == null ? "400" : status.Returned.ToString();
+                status.Returned = status.Returned == null ? $"Something went wrong. Error Code: #{status.Code}" : status.Returned.ToString();
                 switch(status.Code)
                 {
                     case 200:

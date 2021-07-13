@@ -25,15 +25,23 @@ namespace FoodDelivery.Web.Models.VMModels
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal ProductPrice { get; set; }
+        
+        [Required]
+        [DataType(DataType.ImageUrl)]
+        public string Image { get; set; }
 
         public Guid? ExtraId { get; set; }
+
+        [Required]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
+        public string ExtraName { get; set; }
 
         [Required]
         [Range(0, int.MaxValue)]
         public int? ExtraQuantity { get; set; }
 
         [Required]
-        [Range(1, double.MaxValue)]
+        [Range(0, double.MaxValue)]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal ExtraPrice { get; set; }

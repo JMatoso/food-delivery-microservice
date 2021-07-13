@@ -36,6 +36,8 @@ namespace Product.DTO
         [Required]
         [Range(0, int.MaxValue)]
         public int Quantity { get; set; } 
+        
+        public bool Star { get; set; }
 
         public bool IsDisabled { get; set; }
 

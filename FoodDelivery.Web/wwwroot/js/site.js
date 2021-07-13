@@ -1,16 +1,50 @@
 ﻿"use strict";
+var _userId = ""
+
+/* Toastr Options
+-------------------------------------------------- */
+
+toastr.options = {
+  "closeButton": true,
+  "debug": true,
+  "newestOnTop": true,
+  "progressBar": true,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "50000",
+  "extendedTimeOut": "50000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
 
 /* SignalR
 -------------------------------------------------- */
 
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://appHub")
+    .withUrl("http://localhost:5003/appHub")
     .configureLogging(signalR.LogLevel.Information)
     .build()
+
+function addToChannel(userId){
+    _userId = userId
+}
+
+connection.on('UpdateOrders', (message, order) => {
+	toastr.success(message, order)
+});
 
 async function start(){
     try{
         await connection.start()
+
+        if(_userId.length > 0){
+            connection.invoke('AddUserToGroup', _userId).catch(err => console.error(err.toString()))
+        }
+
         console.log("Connected.")
     }catch(err){
         console.log(err)
@@ -18,7 +52,14 @@ async function start(){
     }
 }
 
-//start()
+connection.onclose(async () => {
+    await start()
+})
+
+window.addEventListener('load', () => {
+    start()
+    toastr.success(message)
+})
 
 /* Owl Carousel
 -------------------------------------------------- */
@@ -86,3 +127,7 @@ $("#same-address").click(() => {
         isSameAddress = true
     }
 })
+
+function GetExtraData(data){
+    
+}

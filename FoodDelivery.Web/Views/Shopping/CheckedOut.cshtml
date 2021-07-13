@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Checked out";
+}
+
+@if(!string.IsNullOrEmpty(ViewBag.Error)){
+    <h2 class="text-danger mt-5">
+        @ViewBag.Error
+    </h2>
+}
+
+@if(!string.IsNullOrEmpty(ViewBag.Success)){
+    <h2 class="text-success mt-5">
+        @ViewBag.Success
+    </h2>
+}

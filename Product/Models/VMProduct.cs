@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace Product.Models
 {
@@ -17,6 +18,7 @@ namespace Product.Models
         public string Description { get; set; }
 
         [DataType(DataType.Duration)]
+        [Range(0, int.MaxValue)]
         public int? ReadyTime { get; set; }
 
         [Required]
@@ -31,6 +33,8 @@ namespace Product.Models
 
         [Required]
         [Range(0, int.MaxValue)]
-        public int Quantity { get; set; } 
+        public int Quantity { get; set; }
+        
+        public bool Star { get; set; }
     }
 }

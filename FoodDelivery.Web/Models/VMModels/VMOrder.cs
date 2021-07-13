@@ -21,6 +21,10 @@ namespace FoodDelivery.Web.Models.VMModels
         public int ProductQuantity { get; set; }
 
         [Required]
+        [DataType(DataType.ImageUrl)]
+        public string Image { get; set; }
+
+        [Required]
         [Range(1, double.MaxValue)]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]

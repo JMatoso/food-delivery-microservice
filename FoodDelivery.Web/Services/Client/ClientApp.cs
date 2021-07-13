@@ -13,21 +13,12 @@ using Newtonsoft.Json;
 
 namespace FoodDelivery.Web.Services.Client
 {
-    public interface IClientApp
-    {
-        Task<ReturnStatus> DeleteAsync(string url, string headerValue, string token);
-        Task<ReturnStatus> GetAsync<T>(string url, string headerValue, string token);
-        Task<ReturnStatus> LoginAsync(Login data, string url);
-        Task<ReturnStatus> PostAsync<T>(object data, string url, string headerValue, string token);
-        Task<object> PutAsync<T>(object data, string url, string headerValue, string token);
-        Task<string> Upload(IFormFile image);
-    }
-
     public class ClientApp : IClientApp
     {
         private readonly HttpClient _client;
         private readonly ILogger<ClientApp> _logger;
         private readonly IWebHostEnvironment _web;
+
         public ClientApp(
             HttpClient client,
             ILogger<ClientApp> logger,
@@ -39,42 +30,46 @@ namespace FoodDelivery.Web.Services.Client
         }
 
         #region Configure
-        void ConfigureHeaders(string value, string token)
+        private void ConfigureHeaders(string token = "", string value = "application/json")
         {
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add
             (
-                new MediaTypeWithQualityHeaderValue(value == string.Empty ? "application/json" : value)
+                new MediaTypeWithQualityHeaderValue(value)
             );
 
-            if(!string.IsNullOrEmpty(token))
+            if (!string.IsNullOrEmpty(token))
             {
-                _client.DefaultRequestHeaders.Authorization = 
+                _client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", token);
             }
         }
         #endregion
 
         #region Actions
-        public async Task<ReturnStatus> GetAsync<T>(string url, string headerValue, string token)
+        public async Task<ReturnStatus> GetAsync<T>(string url, string token = "", string headerValue = "application/json")
         {
             try
             {
-                ConfigureHeaders(headerValue, token);
+                ConfigureHeaders(token, headerValue);
 
                 var responseMessage = await _client.GetAsync(url);
                 string content = responseMessage.Content.ReadAsStringAsync().Result;
 
                 if (responseMessage.StatusCode == HttpStatusCode.OK)
                 {
-                    return new ReturnStatus 
+                    return new ReturnStatus
                     {
                         Code = (int)responseMessage.StatusCode,
-                        Returned = JsonConvert.DeserializeObject<T>(content)                       
+                        Returned = JsonConvert.DeserializeObject<T>(content)
                     };
                 }
 
-                return new ReturnStatus { Code = (int)responseMessage.StatusCode };
+                return new ReturnStatus
+                {
+                    Returned = content,
+                    Code = (int)responseMessage.StatusCode
+                };
             }
             catch (Exception e)
             {
@@ -83,11 +78,11 @@ namespace FoodDelivery.Web.Services.Client
             }
         }
 
-        public async Task<ReturnStatus> PostAsync<T>(object data, string url, string headerValue, string token)
+        public async Task<ReturnStatus> PostAsync<T>(object data, string url, string token = "", string headerValue = "application/json")
         {
             try
             {
-                ConfigureHeaders(headerValue, token);
+                ConfigureHeaders(token, headerValue);
 
                 HttpResponseMessage responseMessage = await _client.PostAsync(url,
                     new StringContent(
@@ -97,14 +92,18 @@ namespace FoodDelivery.Web.Services.Client
 
                 if (responseMessage.StatusCode == HttpStatusCode.OK)
                 {
-                    return new ReturnStatus 
+                    return new ReturnStatus
                     {
                         Code = (int)responseMessage.StatusCode,
-                        Returned = content                       
+                        Returned = content
                     };
                 }
 
-                return new ReturnStatus { Code = (int)responseMessage.StatusCode };
+                return new ReturnStatus
+                {
+                    Returned = content,
+                    Code = (int)responseMessage.StatusCode
+                };
             }
             catch (Exception e)
             {
@@ -117,7 +116,7 @@ namespace FoodDelivery.Web.Services.Client
         {
             try
             {
-                ConfigureHeaders("", "");
+                ConfigureHeaders();
 
                 HttpResponseMessage responseMessage = await _client.PostAsync(url,
                     new StringContent(
@@ -134,7 +133,11 @@ namespace FoodDelivery.Web.Services.Client
                     };
                 }
 
-                return new ReturnStatus { Code = (int)responseMessage.StatusCode };
+                return new ReturnStatus
+                {
+                    Returned = content,
+                    Code = (int)responseMessage.StatusCode
+                };
             }
             catch (Exception e)
             {
@@ -143,11 +146,11 @@ namespace FoodDelivery.Web.Services.Client
             }
         }
 
-        public async Task<object> PutAsync<T>(object data, string url, string headerValue, string token)
+        public async Task<ReturnStatus> PutAsync<T>(object data, string url, string token = "", string headerValue = "application/json")
         {
             try
             {
-                ConfigureHeaders(headerValue, token);
+                ConfigureHeaders(token, headerValue);
 
                 HttpResponseMessage responseMessage = await _client.PutAsync(url,
                     new StringContent(
@@ -157,37 +160,49 @@ namespace FoodDelivery.Web.Services.Client
 
                 if (responseMessage.StatusCode == HttpStatusCode.OK)
                 {
-                    return (int)HttpStatusCode.OK;
+                    return new ReturnStatus
+                    {
+                        Returned = content,
+                        Code = (int)responseMessage.StatusCode
+                    };
                 }
 
-                return (int)responseMessage.StatusCode;
+                return new ReturnStatus
+                {
+                    Returned = content,
+                    Code = (int)responseMessage.StatusCode
+                };
             }
             catch (Exception e)
             {
                 _logger.LogWarning(e.Message);
-                return 400;
+                return new ReturnStatus { Code = 400 };
             }
         }
 
-        public async Task<ReturnStatus> DeleteAsync(string url, string headerValue, string token)
+        public async Task<ReturnStatus> DeleteAsync(string url, string token = "", string headerValue = "application/json")
         {
             try
             {
-                ConfigureHeaders(headerValue, token);
+                ConfigureHeaders(token, headerValue);
 
                 var responseMessage = await _client.DeleteAsync(url);
                 string content = responseMessage.Content.ReadAsStringAsync().Result;
 
                 if (responseMessage.StatusCode == HttpStatusCode.OK)
                 {
-                    return new ReturnStatus 
+                    return new ReturnStatus
                     {
                         Code = (int)responseMessage.StatusCode,
-                        Returned = content                       
+                        Returned = content
                     };
                 }
 
-                return new ReturnStatus { Code = (int)responseMessage.StatusCode };
+                return new ReturnStatus
+                {
+                    Returned = content,
+                    Code = (int)responseMessage.StatusCode
+                };
             }
             catch (Exception e)
             {
@@ -200,13 +215,13 @@ namespace FoodDelivery.Web.Services.Client
         {
             string uniqueFileName = null;
 
-            if(image != null)
+            if (image != null)
             {
                 string path = Path.Combine(_web.WebRootPath, "images/");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
                 string filePath = Path.Combine(path, uniqueFileName);
 
-                using(var fs = new FileStream(filePath, FileMode.Create))
+                using (var fs = new FileStream(filePath, FileMode.Create))
                 {
                     await image.CopyToAsync(fs);
                 }

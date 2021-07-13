@@ -49,7 +49,7 @@ namespace Order.Controllers
             }
 
             var cart = await _app.Get(cartId);
-            return cart == null ? null : Ok(cart);
+            return cart == null ? NotFound("Information not found.") : Ok(cart);
         }
 
         /// <summary>
@@ -68,8 +68,12 @@ namespace Order.Controllers
                     ProductId = model.ProductId,
                     ClientId = model.ClientId,
                     ProductName = model.ProductName,
+                    ProductPrice = model.ProductPrice,
+                    ProductQuantity = model.ProductQuantity,
                     ExtraId = model.ExtraId,
+                    Image = model.Image,
                     ExtraQuantity = model.ExtraQuantity,
+                    ExtraPrice = model.ExtraPrice,
                     TotalPrice = model.TotalPrice,
                     Created = DateTimeOffset.Now
                 };
@@ -93,7 +97,7 @@ namespace Order.Controllers
         {
             if(cartId == Guid.Empty)
             {
-                return BadRequest("Insert a valid cart Id");
+                return BadRequest("Insert a valid cart Id.");
             }
 
             var cart = await _app.Get(cartId);

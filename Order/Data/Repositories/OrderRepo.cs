@@ -12,6 +12,7 @@ namespace Order.Data.Repositories
         Task<List<DTO.Order>> All();
         Task<List<DTO.Order>> All(Guid clientId);
         Task<DTO.Order> Get(Guid orderId);
+        Task<bool> ChangeStatus(DTO.Order model);
     }
 
     public class OrderRepo : IOrderRepo
@@ -39,8 +40,10 @@ namespace Order.Data.Repositories
             return true;
         }
 
-        public async Task<bool> ChangeStatus()
+        public async Task<bool> ChangeStatus(DTO.Order model)
         {
+            _db.Update(model);
+            await _db.SaveChangesAsync();
             return true;
         }
     }

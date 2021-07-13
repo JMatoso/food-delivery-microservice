@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using FoodDelivery.Web.Services.Client;
+using FoodDelivery.Web.Helpers;
 
 namespace Controllers
 {
@@ -65,14 +66,14 @@ namespace Controllers
                         return RedirectToAction("Index", "Home");
 
                     case 400:
-                        status.Returned = status.Returned == null ? "400" : status.Returned.ToString();
+                        status.Returned = status.Returned == null ? "Something went wrong. " : status.Returned.ToString();
                         ViewBag.Warning = $"Service unavailable, try again later. \n Error Message: {status.Returned.ToString()}";
                         break;
                     case 401:
-                        ViewBag.Warning = string.IsNullOrEmpty(status.Returned.ToString()) ? "Wrong credentials." : status.Returned.ToString();
+                        ViewBag.Warning = status.Returned == null ? "Wrong credentials." : status.Returned.ToString();
                         break;
                     default:
-                        ViewBag.Error = $"Something went wrong. Error Code: #{status.Code} \n Error Message: {status.Returned.ToString()}";
+                        ViewBag.Error = status.Returned == null ? $"Something went wrong. Error Code: #{status.Code}." : $"Something went wrong. Error Code: #{status.Code} \n Error Message: {status.Returned.ToString()}";
                         break;
                 }
             }

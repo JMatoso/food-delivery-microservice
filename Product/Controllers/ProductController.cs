@@ -114,7 +114,7 @@ namespace Product.Controllers
         /// <response code="400">Fill all required fields.</response>
         /// <response code="401">Not Authorized.</response>
         [HttpPost("product")]
-        public async Task<ActionResult> Add(VMProduct model, IFormFile image)
+        public async Task<ActionResult> Add(VMProduct model)
         {
             if(ModelState.IsValid)
             {
@@ -125,8 +125,9 @@ namespace Product.Controllers
                     Description = model.Description,
                     ReadyTime = model.ReadyTime,
                     Price = model.Price,
-                    Image = await UploadFile.Upload(image),
+                    Image = model.Image,
                     Quantity = model.Quantity,
+                    Star = model.Star,
                     Created = DateTimeOffset.Now
                 };
 

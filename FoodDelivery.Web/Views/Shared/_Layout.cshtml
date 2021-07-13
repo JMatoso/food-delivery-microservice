@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="~/css/AdminLTE.min.css" />
     <link rel="stylesheet" href="~/css/owlcarousel/owl.carousel.min.css">
     <link rel="stylesheet" href="~/css/owlcarousel/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/js/toastr.js/toastr.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -106,6 +107,7 @@
     <script src="~/js/feather.min.js"></script>
     <script src="~/js/owlcarousel/owl.carousel.min.js"></script>
      <script src="~/js/signalr/dist/browser/signalr.js"></script>
+     <script src="~/js/toastr.js/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
         //Start loader
@@ -119,6 +121,18 @@
         //Set feather icons
         feather.replace()
     </script>
+
+    @if(User.Identity.IsAuthenticated)
+    {   
+        <script>
+            window.addEventListener('load', () => {
+                addToChannel("@User.Identity.Name")
+            })
+
+            
+        </script>
+    }
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

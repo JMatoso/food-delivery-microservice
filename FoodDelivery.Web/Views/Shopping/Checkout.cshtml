@@ -1,3 +1,5 @@
+@model FoodDelivery.Web.Models.CommonModel
+
 @{
     ViewData["Title"] = "Checkout";
 }
@@ -24,19 +26,21 @@
     </small>
 </div>
 
-<form action="" method="post">
+<form asp-action="checkedout" asp-route-cartId="@Model.Cart.Id" asp-controller="shopping" method="post">
     <!--Order Detail-->
     <div class="row">
         <!--Product-->
         <div class="col-md-4">
             <h4 class="mb-3">Product</h4>
             <div>
-                <img src="~/images/ingredients.jpg" alt="">
+                <img class="product-image-cart" src="~/images/@Model.Cart.Image" alt="@Model.Cart.ProductName image">
             </div>
             <div class="mt-2">
-                <h5 class="text-dark">No Data Product</h5>
+                <h5 class="text-dark">
+                    @Model.Cart.ProductName
+                </h5>
                 <small class="text-muted">
-                    <strong>Web ID: 1089772</strong>
+                    <strong>Web ID: @Model.GenWebId(Model.Cart.Id)</strong>
                 </small>
             </div>
         </div>
@@ -52,14 +56,19 @@
                             <small>
                                 <strong>Quantity</strong>
                             </small>
-                            <h5 class="text-dark">2</h5>
+                            <h5 class="text-dark">
+                                @Model.Cart.ProductQuantity
+                            </h5>
                         </div>
 
                         <div class="col-6 text-right">
                             <small>
                                 <strong>Price</strong>
                             </small>
-                            <h5 class="text-dark">AKZ 1000</h5>
+                            <h5 class="text-dark">
+                                AKZ 
+                                @Model.Cart.ProductPrice
+                            </h5>
                         </div>
                     </div>
 
@@ -68,14 +77,17 @@
                             <small>
                                 <strong>Extra - Quantity</strong>
                             </small>
-                            <h5 class="text-dark">Fries - 2</h5>
+                            <h5 class="text-dark">**** - @Model.Cart.ExtraQuantity</h5>
                         </div>
 
                         <div class="col-6 text-right">
                             <small>
                                 <strong>Extra Price</strong>
                             </small>
-                            <h5 class="text-dark">AKZ 750</h5>
+                            <h5 class="text-dark">
+                                AKZ 
+                                @Model.Cart.ExtraPrice
+                            </h5>
                         </div>
                     </div>
 
@@ -91,7 +103,10 @@
                             <small>
                                 <strong>Total</strong>
                             </small>
-                            <h5 class="text-dark">AKZ 3500</h5>
+                            <h5 class="text-dark">
+                                AKZ 
+                                @Model.Cart.TotalPrice
+                            </h5>
                         </div>
                     </div>
                 </div>
@@ -105,18 +120,22 @@
                 <h4 class="mb-3">Payment</h4>
                 <div class="d-block my-3">
                     <div class="custom-control custom-radio">
-                        <input id="tpa" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                        <input id="tpa" name="paymentMethod" asp-action="SendOrder.PaymentType" type="radio" value="0" class="custom-control-input" checked required>
                         <label class="custom-control-label" for="tpa">TPA</label>
                     </div>
 
                     <div class="custom-control custom-radio">
-                        <input id="wallet" name="paymentMethod" type="radio" class="custom-control-input" required>
+                        <input id="wallet" name="paymentMethod" asp-action="SendOrder.PaymentType" type="radio" value="1" class="custom-control-input" required>
                         <label class="custom-control-label" for="wallet">Wallet</label>
                     </div>
 
                     <div class="custom-control custom-radio">
-                        <input id="reference" name="paymentMethod" type="radio" class="custom-control-input" required>
+                        <input id="reference" name="paymentMethod" asp-action="SendOrder.PaymentType" value="2" type="radio" class="custom-control-input" required>
                         <label class="custom-control-label" for="reference">Reference</label>
+                    </div>
+
+                    <div class="invalid">
+                        <span asp-validation-for="SendOrder.PaymentType"></span>
                     </div>
                 </div>
                 
@@ -161,14 +180,14 @@
                     
                     <!--Input-->
                     <div class="btn-group w-100">
-                        <input type="text" class="form-control w-100">
+                        <input type="text" class="form-control w-100" asp-for="SendOrder.DeliveryAddress">
                         <button class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="auto" title="Use my actual localization.">
                             <span class="feather-15" data-feather="map-pin"></span>
                         </button>
                     </div>
 
-                    <div class="invalid-feedback">
-                        
+                    <div class="invalid">
+                        <span asp-validation-for="SendOrder.DeliveryAddress"></span>
                     </div>
                 </div>
 

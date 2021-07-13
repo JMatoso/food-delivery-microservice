@@ -1,5 +1,8 @@
+@model FoodDelivery.Web.Models.CommonModel
+
 @{
-    ViewData["Title"] = "#3";
+    string webId = Model.GenWebId(Model.Order.Id);
+    ViewData["Title"] = "#" + webId;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -30,12 +33,12 @@
     <div class="col-md-4">
         <h4 class="mb-3">Product</h4>
         <div>
-            <img src="~/images/ingredients.jpg" alt="">
+            <img class="product-image-cart" src="~/images/@Model.Order.Image" alt="@Model.Order.ProductName image">
         </div>
         <div class="mt-2">
-            <h5 class="text-dark">No Data Product</h5>
+            <h5 class="text-dark">@Model.Order.ProductName</h5>
             <small class="text-muted">
-                <strong>Web ID: 1089772</strong>
+                <strong>Web ID: @Model.GenWebId((Guid)Model.Order.ProductId)</strong>
             </small>
         </div>
     </div>
@@ -51,14 +54,19 @@
                         <small>
                             <strong>Quantity</strong>
                         </small>
-                        <h5 class="text-dark">2</h5>
+                        <h5 class="text-dark">
+                            @Model.Order.ProductQuantity
+                        </h5>
                     </div>
 
                     <div class="col-6 text-right">
                         <small>
                             <strong>Price</strong>
                         </small>
-                        <h5 class="text-dark">AKZ 1000</h5>
+                        <h5 class="text-dark">
+                            AKZ
+                            @Model.Order.ProductPrice
+                        </h5>
                     </div>
                 </div>
 
@@ -67,14 +75,20 @@
                         <small>
                             <strong>Extra - Quantity</strong>
                         </small>
-                        <h5 class="text-dark">Fries - 2</h5>
+                        <h5 class="text-dark">
+                            Fries - 
+                            @Model.Order.ExtraQuantity
+                        </h5>
                     </div>
 
                     <div class="col-6 text-right">
                         <small>
                             <strong>Extra Price</strong>
                         </small>
-                        <h5 class="text-dark">AKZ 750</h5>
+                        <h5 class="text-dark">
+                            AKZ 
+                            @Model.Order.ExtraPrice
+                        </h5>
                     </div>
                 </div>
 
@@ -90,7 +104,10 @@
                         <small>
                             <strong>Total</strong>
                         </small>
-                        <h5 class="text-dark">AKZ 3500</h5>
+                        <h5 class="text-dark">
+                            AKZ
+                            @Model.Order.TotalPrice
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -107,7 +124,9 @@
                     <strong>Order ID</strong>
                 </small>
                 <h5 class="text-dark">
-                    <span class="text-danger">#3</span>
+                    <span class="text-danger">
+                        @webId
+                    </span>
                 </h5>
             </div>
 
@@ -116,7 +135,9 @@
                     <strong>Order Status</strong>
                 </small>
                 <h5 class="text-dark">
-                    <span class="text-success">Accepted</span>
+                    <span class="text-@Model.GetStatus(Model.Order.OrderStatus)">
+                        @Model.Order.OrderStatus
+                    </span>
                 </h5>
             </div>
 
@@ -125,7 +146,9 @@
                     <strong>Payment Type</strong>
                 </small>
                 <h5 class="text-dark">
-                    <span class="text-orange">TPA</span>
+                    <span class="text-orange">
+                        @Model.Order.PaymentType
+                    </span>
                 </h5>
             </div>
 
@@ -134,7 +157,9 @@
                     <strong>Shipping Address</strong>
                 </small>
                 <h5 class="text-dark">
-                    <span class="text-muted d-block">Street St. John, Build 45, Door 1</span>
+                    <span class="text-muted d-block">
+                        @Model.Order.DeliveryAddress
+                    </span>
                 </h5>
             </div>
         </div>
@@ -148,7 +173,7 @@
             <a asp-action="orders" asp-controller="shopping" class="btn btn-default">Back</a>
         </div>
         <div class="col-6 text-right">
-            <a href="#" class="btn btn-danger">Cancel</a>
+            <a href="#" class="btn btn-danger disabled">Cancel</a>
         </div>
     </div>
 </div>
