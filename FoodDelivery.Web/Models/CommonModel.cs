@@ -19,9 +19,8 @@ namespace FoodDelivery.Web.Models
 
         public List<Order> Orders { get; set; }
         public Order Order { get; set; }
-        //public string[] Status { get { return Enum.GetNames(Status.GetType()); }}
+        public string[] Status { get { return Enum.GetNames(typeof(OrderStatus)); }}
         
-
         public VMSendOrder SendOrder { get; set; }
         
         public IFormFile Image { get; set; }

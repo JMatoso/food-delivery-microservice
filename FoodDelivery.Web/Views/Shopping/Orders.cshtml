@@ -92,13 +92,16 @@
 
             <!--List-->
             <div class="mt-2 py-3">
-                <h6 class="text-uppercase">
-                    <a href="#"  class="text-dark">
-                        <strong>
-                            
-                        </strong>
-                    </a>
-                </h6>
+                @foreach (var item in Model.Status)
+                {
+                    <h6 class="text-uppercase">
+                        <a asp-action="orders" asp-controller="shopping" asp-route-filterBy="@item" class="text-dark">
+                            <strong>
+                                @item
+                            </strong>
+                        </a>
+                    </h6>
+                }
             </div>
         </div>
     </div>

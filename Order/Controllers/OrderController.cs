@@ -46,14 +46,14 @@ namespace Order.Controllers
         /// <response code="401">Not Authorized.</response>
         /// <response code="404">Not Found.</response>
         [HttpGet("order/{clientId}")]
-        public async Task<ActionResult<List<DTO.Order>>> AllClientOrders(Guid clientId)
+        public async Task<ActionResult<List<DTO.Order>>> AllClientOrders(Guid clientId, string status = "")
         {
             if(clientId == Guid.Empty)
             {
                 return BadRequest("Insert a valid client ID.");
             }
 
-            var orders = await _app.All(clientId);
+            var orders = await _app.All(clientId, status);
 
             if(orders == null)
             {
@@ -122,7 +122,7 @@ namespace Order.Controllers
 
                 if(await _app.Add(order) == true)
                 {
-                    //Remove cart
+                    await _hub.Clients.Group("System_Group_Test").SendAsync("NewOrder", order);
                     return Ok("Your order has been shipped you can track its status now.");
                 }
                 

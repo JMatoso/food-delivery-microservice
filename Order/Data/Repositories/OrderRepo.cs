@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Order.DTO;
 
 namespace Order.Data.Repositories
 {
@@ -10,7 +11,7 @@ namespace Order.Data.Repositories
     {
         Task<bool> Add(DTO.Order model);
         Task<List<DTO.Order>> All();
-        Task<List<DTO.Order>> All(Guid clientId);
+        Task<List<DTO.Order>> All(Guid clientId, string status = "");
         Task<DTO.Order> Get(Guid orderId);
         Task<bool> ChangeStatus(DTO.Order model);
     }
@@ -25,7 +26,23 @@ namespace Order.Data.Repositories
 
         public async Task<List<DTO.Order>> All() => await _db.Orders.ToListAsync();
 
-        public async Task<List<DTO.Order>> All(Guid clientId) => await _db.Orders.Where(x => x.ClientId == clientId).ToListAsync();
+        public async Task<List<DTO.Order>> All(Guid clientId, string status = "") 
+        {
+            var orders = await _db.Orders.Where(x => x.ClientId == clientId).ToListAsync();
+
+            if(!string.IsNullOrEmpty(status))
+            {
+                var statusCode = (OrderStatus)Enum.Parse(typeof(OrderStatus), status);
+                orders = orders.Where(x => x.OrderStatus == statusCode).ToList();
+            }
+            else
+            {
+                var today = DateTime.Now.ToShortDateString();
+                orders = orders.Where(x => x.Created.Date == DateTime.Today).ToList();
+            }
+
+            return orders;
+        }
 
         public async Task<DTO.Order> Get(Guid orderId)
         {
